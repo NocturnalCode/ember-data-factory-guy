@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var mergeTrees = require('broccoli-merge-trees');
 var Funnel = require('broccoli-funnel');
+const map = require('broccoli-stew').map;
 
 module.exports = {
   name: 'ember-data-factory-guy',
@@ -39,6 +40,8 @@ module.exports = {
       });
       trees.push(packageTree);
     }
+
+    trees = map(trees, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
 
     return mergeTrees(trees);
   },
